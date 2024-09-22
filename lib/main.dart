@@ -38,20 +38,26 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+    void _reduceCounter() {
+    setState(() {
+      _counter--;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('The second version by Bhakin'),
+        title: const Text('The third version by Bhakin'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            // const Text(
+            //   'You have pushed the button this many times:',
+            // ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -59,11 +65,21 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        children: [
+          FloatingActionButton(
+            onPressed: _incrementCounter,
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ),
+              FloatingActionButton(
+            onPressed: _reduceCounter,
+            tooltip: 'reduce',
+            child: const Icon(Icons.delete),
+          ),
+        ],
       ),
+      
     );
   }
 }
