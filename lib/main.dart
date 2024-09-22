@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:test_code_magic/providers/async_counter_provider.dart';
 import 'package:test_code_magic/providers/counter_provider.dart';
 
 void main() {
@@ -60,25 +61,40 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
             Consumer(
               builder: (context, ref, child) {
                 final counter = ref.watch(counterProviderProvider);
-                return  Text(
-                '$counter',
-                style: Theme.of(context).textTheme.headlineMedium,
-              );
+                return Text(
+                  '$counter',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
               },
-             
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                final asyncCounterProvider =
+                    ref.watch(asyncCounterProviderProvider);
+                return asyncCounterProvider.when(
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stackTrace) =>
+                      Center(child: Text(error.toString())),
+                  data: (data) => Text(data.toString()),
+                );
+              },
             ),
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Column(
         children: [
           FloatingActionButton(
-            onPressed: ()=> ref.read(counterProviderProvider.notifier).increase(2),
+            onPressed: () =>
+                ref.read(asyncCounterProviderProvider.notifier).increase(2),
             tooltip: 'Increment',
             child: const Icon(Icons.add),
           ),
           FloatingActionButton(
-            onPressed: ()=> ref.read(counterProviderProvider.notifier).reduce(1),
+            onPressed: () =>
+                ref.read(asyncCounterProviderProvider.notifier).reduce(1),
             tooltip: 'reduce',
             child: const Icon(Icons.delete),
           ),
