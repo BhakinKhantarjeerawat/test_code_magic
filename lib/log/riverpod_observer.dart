@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyObserver extends ProviderObserver {
+class RiverpodObserver extends ProviderObserver {
   @override
   void didAddProvider(
     ProviderBase<Object?> provider,

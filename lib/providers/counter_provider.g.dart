@@ -6,21 +6,19 @@ part of 'counter_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$counterProviderHash() => r'299de6674c086a3b515954ab79c24349d80f56e6';
+String _$counterHash() => r'41b24ff43639f69e02cc824acc2df970b7ca6220';
 
-/// See also [CounterProvider].
-@ProviderFor(CounterProvider)
-final counterProviderProvider =
-    AutoDisposeNotifierProvider<CounterProvider, int>.internal(
-  CounterProvider.new,
-  name: r'counterProviderProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$counterProviderHash,
+/// See also [Counter].
+@ProviderFor(Counter)
+final counterProvider = AutoDisposeNotifierProvider<Counter, int>.internal(
+  Counter.new,
+  name: r'counterProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$counterHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CounterProvider = AutoDisposeNotifier<int>;
+typedef _$Counter = AutoDisposeNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

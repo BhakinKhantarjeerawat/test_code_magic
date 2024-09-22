@@ -6,22 +6,20 @@ part of 'async_counter_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$asyncCounterProviderHash() =>
-    r'ddb355f4da3c3d93a92cdd2253fcfafa15f71db3';
+String _$asyncCounterHash() => r'aff14ef2b2199263c45e7f020c6e81292cb0b5a6';
 
-/// See also [AsyncCounterProvider].
-@ProviderFor(AsyncCounterProvider)
-final asyncCounterProviderProvider =
-    AutoDisposeAsyncNotifierProvider<AsyncCounterProvider, int>.internal(
-  AsyncCounterProvider.new,
-  name: r'asyncCounterProviderProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$asyncCounterProviderHash,
+/// See also [AsyncCounter].
+@ProviderFor(AsyncCounter)
+final asyncCounterProvider =
+    AutoDisposeAsyncNotifierProvider<AsyncCounter, int>.internal(
+  AsyncCounter.new,
+  name: r'asyncCounterProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$asyncCounterHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AsyncCounterProvider = AutoDisposeAsyncNotifier<int>;
+typedef _$AsyncCounter = AutoDisposeAsyncNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'async_counter_provider.g.dart';
 
 @riverpod
-class AsyncCounterProvider extends _$AsyncCounterProvider {
+class AsyncCounter extends _$AsyncCounter {
   @override
   Future<int> build() async {
     await Future.delayed(const Duration(seconds: 2));
@@ -14,7 +14,7 @@ class AsyncCounterProvider extends _$AsyncCounterProvider {
     state = const AsyncValue.loading();
     await Future.delayed(const Duration(seconds: 2));
     state = await AsyncValue.guard(() async {
-      return 2;
+      return state.value! +1;
     });
   }
 
