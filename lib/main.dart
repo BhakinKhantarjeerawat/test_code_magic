@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:test_code_magic/log/riverpod_observer.dart';
+import 'package:test_code_magic/providers/async_counter_provider.dart';
+import 'package:test_code_magic/providers/counter_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(observers: [
+    RiverpodObserver(),
+  ], overrides: const [
+    // sharedPreferencesProvider.overrideWithValue(sharedPreferences)
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,37 +23,24 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
+class MyHomePage extends ConsumerStatefulWidget {
+  const MyHomePage({super.key});
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-    void _reduceCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
-
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  int number = 0;
   @override
   Widget build(BuildContext context) {
+    print('MyHomePage BUILT1');
+    final asyncCounter = ref.watch(asyncCounterProvider);
+    final counter = ref.watch(counterProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -55,31 +50,56 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Consumer(
+              builder: (context, ref, child) {
+                return Text(
+                  '$counter',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
+              },
             ),
+            Consumer(
+              builder: (context, ref, child) {
+                return asyncCounter.when(
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stackTrace) =>
+                      Center(child: Text(error.toString())),
+                  data: (data) => Text(data.toString()),
+                );
+              },
+            ),
+            ElevatedButton(onPressed: () {}, child: const Text('Second Screen'))
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Column(
         children: [
           FloatingActionButton(
-            onPressed: _incrementCounter,
-            tooltip: 'Increment',
+            onPressed: () => ref.read(counterProvider.notifier).increase(5),
+            tooltip: 'A',
             child: const Icon(Icons.add),
           ),
-              FloatingActionButton(
-            onPressed: _reduceCounter,
-            tooltip: 'reduce',
+          FloatingActionButton(
+            onPressed: () => ref.read(counterProvider.notifier).reduce(2),
+            tooltip: 'B',
+            child: const Icon(Icons.delete),
+          ),
+          FloatingActionButton(
+            onPressed: asyncCounter.isLoading
+                ? null
+                : () => ref.read(asyncCounterProvider.notifier).increase(2),
+            tooltip: 'Async Increment',
+            child: const Icon(Icons.add),
+          ),
+          FloatingActionButton(
+            onPressed: () => ref.read(asyncCounterProvider.notifier).reduce(1),
+            tooltip: 'Async reduce',
             child: const Icon(Icons.delete),
           ),
         ],
       ),
-      
     );
   }
 }
