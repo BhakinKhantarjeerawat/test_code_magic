@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:test_code_magic/global_function/my_navigate.dart';
 import 'package:test_code_magic/log/riverpod_observer.dart';
 import 'package:test_code_magic/providers/async_counter_provider.dart';
 import 'package:test_code_magic/providers/counter_provider.dart';
+import 'package:test_code_magic/second_screen.dart';
+import 'package:test_code_magic/third_screen.dart';
 
 void main() {
   runApp(ProviderScope(observers: [
@@ -20,9 +23,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          scaffoldBackgroundColor: Colors.lightGreen),
       home: const MyHomePage(),
     );
   }
@@ -69,37 +72,58 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 );
               },
             ),
-            ElevatedButton(onPressed: () {}, child: const Text('Second Screen'))
+            ElevatedButton(
+                onPressed: () => myNavigate(context, const SecondScreen()),
+                child: const Text('Second Screen')),
+            ElevatedButton(
+                onPressed: () => myNavigate(context, const ThirdScreen()),
+                child: const Text('Third Screen')),
+            ElevatedButton(
+                onPressed: () => ref.read(counterProvider.notifier).increase(5),
+                child: const Text('A')),
+            ElevatedButton(
+                onPressed: () => ref.read(counterProvider.notifier).reduce(2),
+                child: const Text('B')),
+            ElevatedButton(
+                onPressed: asyncCounter.isLoading
+                    ? null
+                    : () => ref.read(asyncCounterProvider.notifier).increase(2),
+                child: const Text('async increase')),
+            ElevatedButton(
+                onPressed: asyncCounter.isLoading
+                    ? null
+                    : () => ref.read(asyncCounterProvider.notifier).reduce(2),
+                child: const Text('async reduce')),
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: Column(
-        children: [
-          FloatingActionButton(
-            onPressed: () => ref.read(counterProvider.notifier).increase(5),
-            tooltip: 'A',
-            child: const Icon(Icons.add),
-          ),
-          FloatingActionButton(
-            onPressed: () => ref.read(counterProvider.notifier).reduce(2),
-            tooltip: 'B',
-            child: const Icon(Icons.delete),
-          ),
-          FloatingActionButton(
-            onPressed: asyncCounter.isLoading
-                ? null
-                : () => ref.read(asyncCounterProvider.notifier).increase(2),
-            tooltip: 'Async Increment',
-            child: const Icon(Icons.add),
-          ),
-          FloatingActionButton(
-            onPressed: () => ref.read(asyncCounterProvider.notifier).reduce(1),
-            tooltip: 'Async reduce',
-            child: const Icon(Icons.delete),
-          ),
-        ],
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      // floatingActionButton: Column(
+      //   children: [
+      //     FloatingActionButton(
+      //       onPressed: () => ref.read(counterProvider.notifier).increase(5),
+      //       tooltip: 'A',
+      //       child: const Icon(Icons.add),
+      //     ),
+      //     FloatingActionButton(
+      //       onPressed: () => ref.read(counterProvider.notifier).reduce(2),
+      //       tooltip: 'B',
+      //       child: const Icon(Icons.delete),
+      //     ),
+      //     FloatingActionButton(
+      //       onPressed: asyncCounter.isLoading
+      //           ? null
+      //           : () => ref.read(asyncCounterProvider.notifier).increase(2),
+      //       tooltip: 'Async Increment',
+      //       child: const Icon(Icons.add),
+      //     ),
+      //     FloatingActionButton(
+      //       onPressed: () => ref.read(asyncCounterProvider.notifier).reduce(1),
+      //       tooltip: 'Async reduce',
+      //       child: const Icon(Icons.delete),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }
