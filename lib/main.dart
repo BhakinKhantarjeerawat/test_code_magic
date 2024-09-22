@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:test_code_magic/providers/counter_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,34 +17,31 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
+class MyHomePage extends ConsumerStatefulWidget {
+  const MyHomePage({super.key});
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  // int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  // void _incrementCounter() {
+  //   setState(() {
+  //     _counter++;
+  //   });
+  // }
 
-    void _reduceCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
+  //   void _reduceCounter() {
+  //   setState(() {
+  //     _counter--;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +57,15 @@ class _MyHomePageState extends State<MyHomePage> {
             // const Text(
             //   'You have pushed the button this many times:',
             // ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Consumer(
+              builder: (context, ref, child) {
+                final counter = ref.watch(counterProviderProvider);
+                return  Text(
+                '$counter',
+                style: Theme.of(context).textTheme.headlineMedium,
+              );
+              },
+             
             ),
           ],
         ),
@@ -68,18 +73,17 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: Column(
         children: [
           FloatingActionButton(
-            onPressed: _incrementCounter,
+            onPressed: ()=> ref.read(counterProviderProvider.notifier).increase(2),
             tooltip: 'Increment',
             child: const Icon(Icons.add),
           ),
-              FloatingActionButton(
-            onPressed: _reduceCounter,
+          FloatingActionButton(
+            onPressed: ()=> ref.read(counterProviderProvider.notifier).reduce(1),
             tooltip: 'reduce',
             child: const Icon(Icons.delete),
           ),
         ],
       ),
-      
     );
   }
 }
