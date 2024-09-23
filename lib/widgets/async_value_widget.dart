@@ -10,6 +10,7 @@ class AsyncValueWidget<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return value.when(
+      skipLoadingOnRefresh: false,
       data: data,
       error: (e, st) => Center(child: ErrorMessageWidget(e.toString())),
       loading: () => const Center(child: CircularProgressIndicator()),

@@ -21,10 +21,6 @@ class SecondScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(counter.toString()),
-              // asyncCounter.when(loading: () => const Center(child: CircularProgressIndicator()),
-              // error:(error, stackTrace) => Center(child: Text(error.toString())),
-              // data: (data) => Text(data.toString()),
-              // ),
               AsyncValueWidget(
                   value: asyncCounter, data: (data) => Text(data.toString()))
             ],
