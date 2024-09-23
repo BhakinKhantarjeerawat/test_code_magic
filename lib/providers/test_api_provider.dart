@@ -11,19 +11,20 @@ class TestApi {
   final Dio dio;
 
   Future<CatFact> fetchDataFromApi() async {
+    // await Future.delayed(const Duration(seconds: 2));
     const path = 'https://catfact.ninja/fact?max_length=140';
 
-    final dioAdapter = DioAdapter(dio: dio);
+    // final dioAdapter = DioAdapter(dio: dio);
 
-    dioAdapter.onGet(
-      path,
-      (server) => server.reply(
-        200,
-        // {'message': 'Bhakin's Success!'},
-        {"fact": "My edited cat fact", "length": 63},
-        delay: const Duration(seconds: 5),
-      ),
-    );
+    // dioAdapter.onGet(
+    //   path,
+    //   (server) => server.reply(
+    //     250,
+    //     // {'message': 'Bhakin's Success!'},
+    //     {"fact": "My edited cat fact", "length": 63},
+    //     delay: const Duration(seconds: 5),
+    //   ),
+    // );
 
     final response = await dio.get(path);
     final object = CatFact.fromJson(response.data);
